@@ -93,27 +93,41 @@ class NewsModel extends BaseModel {
         return $this->delete($this->table_comments, $id);
     }
 
-    // Thêm vào trong class NewsModel
-    public function getNewsPaging($page = 1, $limit = 5) {
+    // Sửa lại hàm này trong NewsModel.php
+    public function getNewsPaging($page = 1, $limit = 5, $keyword = '') {
         $offset = ($page - 1) * $limit;
         
-        // 1. Lấy dữ liệu tin tức (Sắp xếp mới nhất trước)
-        $sql = "SELECT * FROM news ORDER BY created_at DESC LIMIT $limit OFFSET $offset";
+        // 1. Chuẩn bị câu SQL cơ bản
+        $sql = "SELECT * FROM news";
+        $sqlCount = "SELECT COUNT(*) as total FROM news";
+        $params = [];
+
+        // 2. Nếu có từ khóa tìm kiếm -> Thêm điều kiện WHERE
+        if (!empty($keyword)) {
+            $sql .= " WHERE title LIKE :keyword OR description LIKE :keyword";
+            $sqlCount .= " WHERE title LIKE :keyword OR description LIKE :keyword";
+            $params['keyword'] = "%$keyword%";
+        }
+
+        // 3. Thêm sắp xếp và giới hạn phân trang
+        $sql .= " ORDER BY created_at DESC LIMIT $limit OFFSET $offset";
+
+        // 4. Thực thi truy vấn lấy dữ liệu
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
+        $stmt->execute($params);
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // 2. Tính tổng số trang
-        $sqlCount = "SELECT COUNT(*) as total FROM news";
+        // 5. Thực thi truy vấn đếm tổng số dòng (để tính số trang)
         $stmtCount = $this->conn->prepare($sqlCount);
-        $stmtCount->execute();
+        $stmtCount->execute($params);
         $totalRecord = $stmtCount->fetch(PDO::FETCH_ASSOC)['total'];
         $totalPages = ceil($totalRecord / $limit);
 
         return [
             'data' => $data,
             'total_pages' => $totalPages,
-            'current_page' => $page
+            'current_page' => $page,
+            'keyword' => $keyword // Trả lại từ khóa để View dùng
         ];
     }
 }

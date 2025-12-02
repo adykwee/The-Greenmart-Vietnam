@@ -9,18 +9,22 @@ class PostController extends BaseController {
     }
 
     // 1. Danh sách tin tức
+    // Sửa lại hàm index() trong PostController
     public function index() {
-        // Lấy trang hiện tại, mặc định là 1
+        // Lấy trang hiện tại
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         
-        // Lấy dữ liệu phân trang (5 bài mỗi trang)
-        $pagingData = $this->newsModel->getNewsPaging($page, 5);
+        // Lấy từ khóa tìm kiếm (nếu có)
+        $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
         
-        // Truyền dữ liệu sang View
+        // Gọi Model (Truyền thêm keyword vào)
+        $pagingData = $this->newsModel->getNewsPaging($page, 5, $keyword);
+        
         $this->view('client/news/index', [
             'newsList' => $pagingData['data'],
             'totalPages' => $pagingData['total_pages'],
-            'currentPage' => $pagingData['current_page']
+            'currentPage' => $pagingData['current_page'],
+            'keyword' => $keyword // Truyền biến này ra View để giữ lại trên ô input
         ]);
     }
 
