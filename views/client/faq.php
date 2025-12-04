@@ -1,11 +1,11 @@
 <?php include './views/layouts/header_client.php'; ?>
 
-<div class="bg-light py-5 mb-5 text-center">
+<section class="page-header-block text-center">
     <div class="container">
-        <h1 class="fw-bold">Câu Hỏi Thường Gặp</h1>
-        <p class="text-muted">Giải đáp các thắc mắc về sản phẩm và dịch vụ của Tech Store</p>
+        <h1 class="fw-bold h3 mb-2">Câu Hỏi Thường Gặp</h1>
+        <p class="text-muted">Giải đáp các thắc mắc về sản phẩm và dịch vụ của The Greenmart Vietnam</p>
     </div>
-</div>
+</section>
 
 <div class="container mb-5">
     <div class="row justify-content-center">

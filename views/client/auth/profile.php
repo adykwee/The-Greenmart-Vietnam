@@ -1,42 +1,55 @@
 <?php include './views/layouts/header_client.php'; ?>
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            
-            <div class="card shadow border-0 mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="fas fa-user-circle me-2"></i>Hồ sơ cá nhân</h5>
-                </div>
-                <div class="card-body p-4">
+<section class="page-header-block mb-4">
+    <div class="container">
+        <h1 class="fw-bold h3 mb-0" style="color: #042a1b;">Hồ sơ cá nhân</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 small">
+                <li class="breadcrumb-item"><a href="index.php" class="text-decoration-none text-muted">Trang chủ</a></li>
+                <li class="breadcrumb-item active text-success" aria-current="page">Tài khoản</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<div class="container mb-5">
+    <div class="row justify-content-center g-4">
+        
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm p-3 h-100" style="border-radius: 12px;">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-4 pb-2 border-bottom" style="color: var(--green);">
+                        <i class="fas fa-user-edit me-2"></i>Thông tin tài khoản
+                    </h5>
+
                     <form action="index.php?controller=auth&action=updateProfile" method="POST" enctype="multipart/form-data">
-                        <div class="row">
-                            <div class="col-md-4 text-center mb-3">
-                                <img id="avatarPreview" 
-                                     src="./assets/uploads/<?php echo $user['avatar']; ?>" 
-                                     class="rounded-circle img-thumbnail mb-3" 
-                                     style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #eee;">
-                                
-                                <label class="btn btn-outline-primary btn-sm w-100">
-                                    <i class="fas fa-camera me-1"></i> Chọn ảnh mới
+                        <div class="d-flex flex-column flex-sm-row gap-4 align-items-center mb-4">
+                            
+                            <div class="position-relative text-center">
+                                <div class="rounded-circle overflow-hidden border border-2 border-success" style="width: 120px; height: 120px;">
+                                    <img id="avatarPreview" 
+                                         src="./assets/uploads/<?php echo $user['avatar']; ?>" 
+                                         class="w-100 h-100 object-fit-cover" 
+                                         alt="Avatar">
+                                </div>
+                                <label class="btn btn-sm btn-green rounded-pill position-absolute bottom-0 start-50 translate-middle-x mb-n2 shadow-sm" style="white-space: nowrap;">
+                                    <i class="fas fa-camera me-1"></i>Đổi ảnh
                                     <input type="file" name="avatar" class="d-none" accept="image/*" onchange="previewImage(this)">
                                 </label>
-                                <small class="text-muted d-block mt-2">Chỉ nhận file ảnh (JPG, PNG)</small>
                             </div>
 
-                            <div class="col-md-8">
+                            <div class="flex-grow-1 w-100">
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Email đăng nhập</label>
+                                    <label class="form-label text-muted small fw-bold">EMAIL ĐĂNG NHẬP</label>
                                     <input type="text" class="form-control bg-light" value="<?php echo $user['email']; ?>" disabled>
-                                    <small class="text-muted">Email không thể thay đổi.</small>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold">Họ và tên</label>
+                                    <label class="form-label text-muted small fw-bold">HỌ VÀ TÊN</label>
                                     <input type="text" name="fullname" class="form-control" value="<?php echo htmlspecialchars($user['full_name']); ?>" required>
                                 </div>
-                                <div class="text-end">
-                                     <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-save me-1"></i> Cập nhật hồ sơ
+                                <div class="text-end mt-3">
+                                    <button type="submit" class="btn btn-green px-4">
+                                        <i class="fas fa-save me-2"></i>Lưu thay đổi
                                     </button>
                                 </div>
                             </div>
@@ -44,55 +57,51 @@
                     </form>
                 </div>
             </div>
+        </div>
 
-            <div class="card shadow border-0">
-                <div class="card-header bg-danger text-white">
-                    <h5 class="mb-0"><i class="fas fa-key me-2"></i>Đổi mật khẩu</h5>
-                </div>
-                <div class="card-body p-4">
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm p-3 h-100" style="border-radius: 12px;">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-4 pb-2 border-bottom text-danger">
+                        <i class="fas fa-shield-alt me-2"></i>Bảo mật
+                    </h5>
+                    
                     <form action="index.php?controller=auth&action=changePassword" method="POST">
-                        <div class="mb-3 row">
-                            <label class="col-sm-4 col-form-label fw-bold">Mật khẩu hiện tại</label>
-                            <div class="col-sm-8">
-                                <input type="password" name="current_password" class="form-control" required>
-                            </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="curr_pass" name="current_password" placeholder="Mật khẩu hiện tại" required>
+                            <label for="curr_pass">Mật khẩu hiện tại</label>
                         </div>
-                        <div class="mb-3 row">
-                            <label class="col-sm-4 col-form-label fw-bold">Mật khẩu mới</label>
-                            <div class="col-sm-8">
-                                <input type="password" name="new_password" class="form-control" required minlength="6">
-                            </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="new_pass" name="new_password" placeholder="Mật khẩu mới" required minlength="6">
+                            <label for="new_pass">Mật khẩu mới</label>
                         </div>
-                        <div class="mb-3 row">
-                            <label class="col-sm-4 col-form-label fw-bold">Nhập lại MK mới</label>
-                            <div class="col-sm-8">
-                                <input type="password" name="confirm_password" class="form-control" required>
-                            </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="conf_pass" name="confirm_password" placeholder="Xác nhận mật khẩu" required>
+                            <label for="conf_pass">Nhập lại mật khẩu mới</label>
                         </div>
-                        <div class="text-end">
-                            <button type="submit" class="btn btn-danger">Xác nhận đổi mật khẩu</button>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-outline-danger">
+                                <i class="fas fa-key me-2"></i>Cập nhật mật khẩu
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
-
         </div>
+
     </div>
 </div>
 
 <script>
 function previewImage(input) {
-    // Kiểm tra xem người dùng đã chọn file chưa
     if (input.files && input.files[0]) {
         var reader = new FileReader();
-
-        // Khi file được đọc thành công
         reader.onload = function(e) {
-            // Gán kết quả đọc được (dạng base64) vào thuộc tính src của thẻ img
             document.getElementById('avatarPreview').src = e.target.result;
         }
-
-        // Bắt đầu đọc file ảnh dưới dạng Data URL
         reader.readAsDataURL(input.files[0]);
     }
 }

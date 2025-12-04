@@ -1,5 +1,18 @@
 <?php include './views/layouts/header_client.php'; ?>
 
+<section class="page-header-block mb-4">
+    <div class="container">
+        <h1 class="fw-bold h3 mb-0" style="color: #042a1b;">Tin Tức</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 small">
+                <li class="breadcrumb-item"><a href="index.php" class="text-decoration-none text-muted">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="index.php?controller=post&action=index" class="text-decoration-none text-muted">Tin Tức</a></li>
+                <li class="breadcrumb-item active text-success" aria-current="page"><?php echo $post['title']; ?></li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-8">
@@ -25,7 +38,7 @@
                     <form action="index.php?controller=post&action=comment" method="POST" class="mb-4">
                         <input type="hidden" name="news_id" value="<?php echo $post['id']; ?>">
                         <div class="d-flex">
-                            <img src="./assets/uploads/default.png" class="rounded-circle me-3" width="50">
+                            <img src="./assets/uploads/default.png" class="rounded-circle me-3" width="50" height="50">
                             <div class="w-100">
                                 <textarea name="content" class="form-control" rows="3" placeholder="Viết bình luận..." required></textarea>
                                 <button type="submit" class="btn btn-primary mt-2">Gửi bình luận</button>
@@ -42,7 +55,7 @@
                     <?php foreach($comments as $cmt): ?>
                         <div class="d-flex mb-3">
                             <div class="flex-shrink-0">
-                                <img src="./assets/uploads/default.png" class="rounded-circle" width="50">
+                                <img src="./assets/uploads/default.png" class="rounded-circle" width="50" height="50">
                             </div>
                             <div class="flex-grow-1 ms-3">
                                 <h6 class="fw-bold mb-0"><?php echo $cmt['full_name']; ?></h6>

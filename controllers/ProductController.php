@@ -30,8 +30,13 @@ class ProductController extends BaseController {
         if ($id) {
             $product = $this->productModel->getProductById($id);
             if ($product) {
-                // Có thể thêm logic lấy sản phẩm liên quan ở đây
-                $this->view('client/products/detail', ['product' => $product]);
+                $this->view('client/products/detail', [
+                    'product' => $product,
+                    // --- Dữ liệu SEO ---
+                    'meta_title' => $product['name'],
+                    'meta_desc' => $product['description'], // Lấy mô tả ngắn làm meta desc
+                    'meta_image' => $product['image']
+                ]);
             } else {
                 echo "Sản phẩm không tồn tại!";
             }

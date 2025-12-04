@@ -5,63 +5,72 @@ class AdminSettingController extends BaseController {
     private $model;
 
     public function __construct() {
-        // Bắt buộc phải là Admin
         $this->checkAdmin();
         $this->model = new BaseModel();
     }
 
-    // Lấy data và xử lý update
     public function index() {
-        // 1. Lấy tất cả cấu hình hiện tại (settingsRaw)
+        // 1. Lấy settings hiện tại
         $settingsRaw = $this->model->all('settings');
-        // Chuyển đổi thành mảng dễ truy cập: [key => value]
         $settings = [];
         foreach($settingsRaw as $s) {
             $settings[$s['config_key']] = $s['config_value'];
         }
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Xử lý LOGO/IMAGE (nếu có)
-            $imageName = $settings['site_logo']; // Giữ tên cũ
+            // --- XỬ LÝ UPLOAD ẢNH LOGO ---
+            $logoName = $settings['site_logo'] ?? '';
             if (!empty($_FILES['site_logo']['name'])) {
-                $newImage = $this->handleUpload($_FILES['site_logo']);
-                if ($newImage) {
-                    $imageName = $newImage;
-                    // Xóa file cũ (nếu cần)
-                }
+                $newLogo = $this->handleUpload($_FILES['site_logo'], 'logo');
+                if ($newLogo) $logoName = $newLogo;
             }
 
-            // 2. Lặp qua các field text/value để update
-            foreach ($_POST as $key => $value) {
-                // Bỏ qua logo vì ta xử lý nó riêng
-                if ($key == 'site_logo') continue;
+            // --- XỬ LÝ UPLOAD ẢNH GIỚI THIỆU (MỚI THÊM) ---
+            $aboutImageName = $settings['page_about_image'] ?? '';
+            if (!empty($_FILES['page_about_image']['name'])) {
+                $newAboutImg = $this->handleUpload($_FILES['page_about_image'], 'about');
+                if ($newAboutImg) $aboutImageName = $newAboutImg;
+            }
 
-                // Update trong Database
-                $sql = "UPDATE settings SET config_value = :value WHERE config_key = :key";
+            // --- 3. Xử lý BANNER TRANG CHỦ (MỚI THÊM) ---
+            $bannerName = $settings['page_home_banner'] ?? '';
+            if (!empty($_FILES['page_home_banner']['name'])) {
+                $newBanner = $this->handleUpload($_FILES['page_home_banner'], 'banner');
+                if ($newBanner) $bannerName = $newBanner;
+            }
+
+            // --- LƯU DỮ LIỆU ---
+            // Lưu các field text
+            foreach ($_POST as $key => $value) {
+                if (in_array($key, ['site_logo', 'page_about_image', 'page_home_banner'])) continue; 
+
+                $sql = "INSERT INTO settings (config_key, config_value) VALUES (:key, :value) 
+                        ON DUPLICATE KEY UPDATE config_value = :value";
                 $this->model->query($sql, ['value' => trim($value), 'key' => $key]);
             }
             
-            // Update logo sau cùng
-            $sqlLogo = "UPDATE settings SET config_value = :value WHERE config_key = 'site_logo'";
-            $this->model->query($sqlLogo, ['value' => $imageName]);
+            // Lưu tên file ảnh vào DB
+            $this->model->query("INSERT INTO settings (config_key, config_value) VALUES ('site_logo', :val) ON DUPLICATE KEY UPDATE config_value = :val", ['val' => $logoName]);
+            $this->model->query("INSERT INTO settings (config_key, config_value) VALUES ('page_about_image', :val) ON DUPLICATE KEY UPDATE config_value = :val", ['val' => $aboutImageName]);
             
-            // Redirect để cập nhật giao diện
+            // Lưu Banner mới
+            $this->model->query("INSERT INTO settings (config_key, config_value) VALUES ('page_home_banner', :val) ON DUPLICATE KEY UPDATE config_value = :val", ['val' => $bannerName]);
+            
             header("Location: index.php?controller=adminSetting&action=index");
         }
 
-        // Truyền settings vào View
         $this->view('admin/settings/index', ['settings' => $settings]);
     }
     
-    // Hàm upload ảnh (Dùng lại từ AdminProductController)
-    private function handleUpload($file) {
+    // Hàm upload (đã chỉnh sửa để nhận prefix tên file)
+    private function handleUpload($file, $prefix = 'file') {
         if ($file['error'] == 0) {
             $targetDir = "assets/uploads/";
-            $fileName = time() . "_setting_" . basename($file["name"]);
+            $fileName = time() . "_" . $prefix . "_" . basename($file["name"]);
             $targetFile = $targetDir . $fileName;
             
             $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-            if (in_array($fileType, ['jpg', 'jpeg', 'png', 'gif'])) {
+            if (in_array($fileType, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
                 if (move_uploaded_file($file["tmp_name"], $targetFile)) {
                     return $fileName;
                 }

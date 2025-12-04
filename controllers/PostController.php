@@ -39,7 +39,11 @@ class PostController extends BaseController {
             
             $this->view('client/news/detail', [
                 'post' => $post,
-                'comments' => $comments
+                'comments' => $comments,
+                // --- Dữ liệu SEO ---
+                'meta_title' => $post['title'],
+                'meta_desc' => $post['description'],
+                'meta_image' => $post['image']
             ]);
         } else {
             echo "Bài viết không tồn tại";

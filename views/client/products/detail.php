@@ -1,14 +1,19 @@
 <?php include './views/layouts/header_client.php'; ?>
 
-<div class="container py-5">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.php">Trang chủ</a></li>
-            <li class="breadcrumb-item"><a href="index.php?controller=product">Sản phẩm</a></li>
-            <li class="breadcrumb-item active" aria-current="page"><?php echo $product['name']; ?></li>
-        </ol>
-    </nav>
+<section class="page-header-block mb-4">
+    <div class="container">
+        <h1 class="fw-bold h3 mb-0" style="color: #042a1b;">Chi tiết sản phẩm</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 small">
+                <li class="breadcrumb-item"><a href="index.php" class="text-decoration-none text-muted">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="index.php?controller=product" class="text-decoration-none text-muted">Cửa hàng</a></li>
+                <li class="breadcrumb-item active text-success" aria-current="page"><?php echo $product['name']; ?></li>
+            </ol>
+        </nav>
+    </div>
+</section>
 
+<div class="container py-5">
     <div class="row">
         <div class="col-md-5 mb-4">
             <div class="card border-0 shadow-sm">
@@ -44,7 +49,6 @@
             <div class="card bg-light border-0">
                 <div class="card-body">
                     <ul class="list-unstyled mb-0">
-                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Bảo hành chính hãng 12 tháng</li>
                         <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Giao hàng toàn quốc</li>
                         <li><i class="fas fa-check-circle text-success me-2"></i> Đổi trả trong 7 ngày</li>
                     </ul>

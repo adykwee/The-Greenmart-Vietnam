@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Mật khẩu mặc định là: 123456 (đã mã hóa)
 INSERT INTO `users` (`id`, `full_name`, `email`, `password`, `role`, `avatar`) VALUES
 (1, 'Quản Trị Viên', 'admin@gmail.com', '$2y$10$RVyy1shjGVoHmzZfnl3fYO0YRC79eZlcHBM7GxEom8OEy1LXjeYVa', 'admin', 'default.png'),
-(2, 'Nguyễn Văn Khách', 'khach@gmail.com', '$2y$10$RVyy1shjGVoHmzZfnl3fYO0YRC79eZlcHBM7GxEom8OEy1LXjeYVa', 'user', 'default.png');
+(2, 'Khách', 'khach@gmail.com', '$2y$10$RVyy1shjGVoHmzZfnl3fYO0YRC79eZlcHBM7GxEom8OEy1LXjeYVa', 'user', 'default.png');
 
 -- --------------------------------------------------------
 
@@ -53,10 +53,10 @@ CREATE TABLE IF NOT EXISTS `settings` (
 -- Dữ liệu mẫu Settings
 INSERT INTO `settings` (`config_key`, `config_value`) VALUES
 ('site_logo', 'logo.png'),
-('site_name', 'Công Ty Công Nghệ ABC'),
-('contact_email', 'contact@abc.com'),
-('contact_phone', '0909 123 456'),
-('contact_address', '123 Đường Số 1, Quận 1, TP.HCM');
+('site_name', 'The Greenmart Vietnam'),
+('contact_email', 'contact@thegreenmart.com'),
+('contact_phone', '0794 204 340'),
+('contact_address', '268/23 Lê Văn Việt, P. Tăng Nhơn Phú B, TP. Thủ Đức, TP.HCM');
 
 -- --------------------------------------------------------
 
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `faqs` (
 -- Dữ liệu mẫu FAQs
 INSERT INTO `faqs` (`question`, `answer`, `order_number`) VALUES
 ('Làm thế nào để mua hàng?', 'Bạn chỉ cần chọn sản phẩm vào giỏ hàng và tiến hành thanh toán.', 1),
-('Chính sách bảo hành bao lâu?', 'Tất cả sản phẩm điện tử được bảo hành 12 tháng.', 2);
+('Chính sách đổi trả như thế nào?', 'Khách hàng có thể đổi hàng trong một khoảng thời gian 7 ngày nếu sản phẩm lỗi do nhà sản xuất hoặc không như mô tả.', 2);
 
 -- --------------------------------------------------------
 
@@ -109,9 +109,23 @@ CREATE TABLE IF NOT EXISTS `products` (
 
 -- Dữ liệu mẫu Products
 INSERT INTO `products` (`name`, `price`, `description`, `image`) VALUES
-('Laptop Gaming Dell', 25000000, 'Laptop cấu hình mạnh mẽ cho game thủ', 'laptop.jpg'),
-('iPhone 15 Pro Max', 32000000, 'Điện thoại thông minh cao cấp nhất của Apple', 'iphone.jpg'),
-('Chuột Logitech', 500000, 'Chuột không dây tiện lợi', 'mouse.jpg');
+('Ống hút tre', 10000, 'Ống hút thân thiện với môi trường', 'bamboo_straw.jpg'),
+('Bình nước giữ nhiệt tre', 120000, 'Bình nước làm từ tre tự nhiên', 'bamboo_water_bottle.jpg'),
+('Túi vải tái sử dụng', 50000, 'Túi vải thân thiện với môi trường', 'fabric_bag.jpg'),
+('Bút tre', 15000, 'Bút làm từ tre tự nhiên', 'bamboo_pen.jpg'),
+('Khay lục bình đan thủ công', 80000, 'Khay đựng đồ làm từ lục bình', 'water_hyacinth_tray.jpg'),
+('Nến thơm thiên nhiên', 60000, 'Nến làm từ sáp ong tự nhiên', 'natural_candle.jpg'),
+('Làn mây đan tay', 70000, 'Làn đựng đồ làm từ mây tre', 'woven_basket.jpg'),
+('Cốc tre', 20000, 'Cốc uống nước làm từ tre', 'bamboo_cup.jpg'),
+('Chasen - Cây đánh trà Nhật Bản', 30000, 'Dụng cụ đánh trà truyền thống Nhật Bản', 'chasen.jpg'),
+('Bàn chải đánh răng tre', 25000, 'Bàn chải thân thiện với môi trường', 'bamboo_toothbrush.jpg'),
+('Túi xách cỏ bàng', 90000, 'Túi xách làm từ cỏ bàng tự nhiên', 'seagrass_bag.jpg'),
+('Ống hút cỏ bàng', 12000, 'Ống hút làm từ cỏ bàng', 'seagrass_straw.jpg'),
+('Giỏ đựng trái cây mây tre', 110000, 'Giỏ đựng trái cây làm từ mây tre', 'fruit_basket.jpg'),
+('Hộp đựng bút tre', 40000, 'Hộp đựng bút làm từ tre', 'bamboo_pen_holder.jpg'),
+('Bộ dao, thìa , dĩa tre', 60000, 'Bộ dao, thìa, dĩa làm từ tre', 'bamboo_cutlery_set.jpg'),
+('Khăn lau đa năng từ sợi tre', 15000, 'Khăn lau thân thiện với môi trường', 'bamboo_fiber_cloth.jpg'),
+('Túi xách bồn bồn thổ cẩm', 95000, 'Túi xách đan từ cây bồn bồn', 'bong_bong_bag.jpg');
 
 -- --------------------------------------------------------
 
@@ -166,8 +180,23 @@ CREATE TABLE IF NOT EXISTS `news` (
 
 -- Dữ liệu mẫu News
 INSERT INTO `news` (`title`, `description`, `content`, `image`) VALUES
-('Thông báo nghỉ lễ 30/4', 'Lịch nghỉ lễ của công ty...', 'Nội dung chi tiết thông báo nghỉ lễ...', 'holiday.jpg'),
-('Ra mắt sản phẩm mới', 'Công ty ra mắt dòng sản phẩm X...', 'Chi tiết sản phẩm mới...', 'new_product.jpg');
+('Bảo vệ môi trường với sản phẩm từ thiên nhiên', 'Sử dụng sản phẩm từ thiên nhiên giúp giảm thiểu ô nhiễm môi trường.', 'Nội dung chi tiết về việc bảo vệ môi trường...', 'environment_friendly.jpg'),
+('Lợi ích của việc sử dụng ống hút tre', 'Ống hút tre là lựa chọn thân thiện với môi trường.', 'Nội dung chi tiết về ống hút tre...', 'bamboo_straw_news.jpg'),
+('Xu hướng tiêu dùng xanh năm 2024', 'Người tiêu dùng ngày càng quan tâm đến sản phẩm xanh.', 'Nội dung chi tiết về xu hướng tiêu dùng xanh...', 'green_consumption.jpg'),
+('Cách tái chế sản phẩm tre đúng cách', 'Hướng dẫn tái chế sản phẩm tre để bảo vệ môi trường.', 'Nội dung chi tiết về tái chế sản phẩm tre...', 'bamboo_recycling.jpg'),
+('Trạm pin xanh', 'Đổi pin cũ, tặng quà xanh', 'Nội dung chi tiết về chương trình trạm pin xanh...', 'green_battery_station.jpg'),
+('Quà tặng doanh nghiệp thân thiện với môi trường', 'Lựa chọn quà tặng xanh cho doanh nghiệp.', 'Nội dung chi tiết về quà tặng doanh nghiệp...', 'eco_friendly_gifts.jpg'),
+('Sử dụng túi vải thay thế túi nylon', 'Lợi ích của việc sử dụng túi vải.', 'Nội dung chi tiết về túi vải...', 'fabric_bags.jpg'),
+('Chia sẻ từ khách hàng về sản phẩm xanh', 'Khách hàng nói gì về sản phẩm thân thiện với môi trường?', 'Nội dung chi tiết về chia sẻ khách hàng...', 'customer_sharing.jpg'),
+('Hướng dẫn chăm sóc sản phẩm tre', 'Cách bảo quản và chăm sóc sản phẩm tre.', 'Nội dung chi tiết về chăm sóc sản phẩm tre...', 'bamboo_care.jpg'),
+('Sự kiện trồng cây xanh cộng đồng', 'Tham gia sự kiện trồng cây xanh cùng chúng tôi.', 'Nội dung chi tiết về sự kiện trồng cây xanh...', 'community_tree_planting.jpg'),
+('Tái chế rác thải nhựa', 'Cách tái chế rác thải nhựa hiệu quả.', 'Nội dung chi tiết về tái chế rác thải nhựa...', 'plastic_recycling.jpg'),
+('Lợi ích của việc sử dụng nến thơm thiên nhiên', 'Nến thơm từ thiên nhiên mang lại nhiều lợi ích.', 'Nội dung chi tiết về nến thơm thiên nhiên...', 'natural_scented_candles.jpg'),
+('Sản phẩm từ lục bình - Giải pháp xanh cho ngôi nhà bạn', 'Lục bình là vật liệu tự nhiên tuyệt vời.', 'Nội dung chi tiết về sản phẩm từ lục bình...', 'water_hyacinth_products.jpg'),
+('Ra mắt bộ sưu tập ống hút mới', 'Bộ sưu tập ống hút tre đa dạng mẫu mã.', 'Nội dung chi tiết về bộ sưu tập ống hút...', 'new_bamboo_straw_collection.jpg'),
+('Chương trình khuyến mãi tháng 6', 'Ưu đãi hấp dẫn cho khách hàng trong tháng 6.', 'Nội dung chi tiết về chương trình khuyến mãi...', 'june_promotion.jpg'),
+('Ra mắt túi xách bồn bồn thổ cẩm', 'Túi xách bồn bồn - Sự kết hợp hoàn hảo giữa thời trang và thiên nhiên.', 'Nội dung chi tiết về túi xách bồn bồn...', 'bong_bong_bag_launch.jpg'),
+('Chương trình giảm giá đặc biệt cho sinh viên', 'Ưu đãi hấp dẫn dành riêng cho sinh viên.', 'Nội dung chi tiết về chương trình giảm giá sinh viên...', 'student_discount.jpg');
 
 -- --------------------------------------------------------
 
