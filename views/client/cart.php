@@ -49,7 +49,7 @@
         </table>
 
         <div class="text-end">
-            <a href="index.php" class="btn btn-secondary">Tiếp tục mua sắm</a>
+            <a href="index.php?controller=product" class="btn btn-secondary">Tiếp tục mua sắm</a>
             <a href="index.php?controller=cart&action=checkout" class="btn btn-success btn-lg">Thanh Toán Ngay</a>
         </div>
     <?php endif; ?>
