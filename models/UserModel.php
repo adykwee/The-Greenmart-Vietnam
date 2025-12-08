@@ -37,47 +37,23 @@ class UserModel extends BaseModel {
         ]);
     }
 
-    // Thêm vào class AuthController
-
-    public function changePassword() {
-        // 1. Kiểm tra đăng nhập
-        if (!isset($_SESSION['user'])) {
-            header("Location: index.php?controller=auth&action=login");
-            exit();
-        }
-
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $id = $_SESSION['user']['id'];
-            $current_pass = $_POST['current_password'];
-            $new_pass = $_POST['new_password'];
-            $confirm_pass = $_POST['confirm_password'];
-
-            // 2. Lấy thông tin user từ DB để lấy mật khẩu đã mã hóa
-            $user = $this->userModel->getUserById($id);
-
-            // 3. Kiểm tra mật khẩu cũ có khớp không
-            if (!password_verify($current_pass, $user['password'])) {
-                echo "<script>alert('Mật khẩu hiện tại không đúng!'); history.back();</script>";
-                return;
-            }
-
-            // 4. Kiểm tra mật khẩu mới nhập lại có khớp không
-            if ($new_pass !== $confirm_pass) {
-                echo "<script>alert('Mật khẩu mới không khớp!'); history.back();</script>";
-                return;
-            }
-
-            // 5. Kiểm tra độ dài mật khẩu (VD: > 6 ký tự)
-            if (strlen($new_pass) < 6) {
-                echo "<script>alert('Mật khẩu mới phải có ít nhất 6 ký tự!'); history.back();</script>";
-                return;
-            }
-
-            // 6. Mã hóa mật khẩu mới và cập nhật
-            $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT);
-            $this->userModel->updatePassword($id, $new_pass_hash);
-
-            echo "<script>alert('Đổi mật khẩu thành công!'); window.location.href='index.php?controller=auth&action=profile';</script>";
+    public function updatePassword($id, $newPasswordHash) {
+        // 1. Kiểm tra lại tên bảng và tên cột
+        // Tên bảng phải là 'users'
+        // Tên cột mật khẩu phải là 'password' (nếu bạn đặt là 'pass' hay 'pwd' thì phải sửa lại)
+        $sql = "UPDATE users SET password = :password WHERE id = :id";
+        
+        $stmt = $this->conn->prepare($sql);
+        
+        // Thêm try-catch để bắt lỗi SQL nếu có
+        try {
+            return $stmt->execute([
+                'password' => $newPasswordHash,
+                'id' => $id
+            ]);
+        } catch (PDOException $e) {
+            echo "Lỗi SQL: " . $e->getMessage();
+            die();
         }
     }
 }

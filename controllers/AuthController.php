@@ -147,5 +147,53 @@ class AuthController extends BaseController {
             echo "<script>alert('Cập nhật thông tin thành công!'); window.location.href='index.php?controller=auth&action=profile';</script>";
         }
     }
+
+    public function changePassword() {
+        if (!isset($_SESSION['user'])) {
+            header("Location: index.php?controller=auth&action=login");
+            exit();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $id = $_SESSION['user']['id'];
+            $current_pass = $_POST['current_password'];
+            $new_pass = $_POST['new_password'];
+            $confirm_pass = $_POST['confirm_password'];
+
+            echo "DEBUG: Đang xử lý đổi mật khẩu...<br>";
+
+            // 1. Lấy user từ DB
+            $user = $this->userModel->find('users', $id);
+            if (!$user) {
+                die("Lỗi: Không tìm thấy User có ID = $id trong Database.");
+            }
+            echo "DEBUG: Đã tìm thấy user: " . $user['email'] . "<br>";
+
+            // 2. Kiểm tra pass cũ
+            // Lưu ý: Nếu DB lưu pass thường (chưa mã hóa), dòng này sẽ sai.
+            if (!password_verify($current_pass, $user['password'])) {
+                echo "DEBUG: Mật khẩu trong DB: " . $user['password'] . "<br>";
+                echo "DEBUG: Mật khẩu bạn nhập: " . $current_pass . "<br>";
+                die("Lỗi: password_verify trả về False -> Mật khẩu cũ không khớp!");
+            }
+            echo "DEBUG: Mật khẩu cũ khớp!<br>";
+
+            // 3. Kiểm tra nhập lại
+            if ($new_pass !== $confirm_pass) {
+                die("Lỗi: Mật khẩu xác nhận không trùng khớp.");
+            }
+
+            // 4. Update
+            $new_pass_hash = password_hash($new_pass, PASSWORD_DEFAULT);
+            $result = $this->userModel->updatePassword($id, $new_pass_hash);
+
+            if ($result) {
+                echo "Thành công! Đang chuyển hướng...";
+                echo "<script>alert('Đổi mật khẩu thành công!'); window.location.href='index.php?controller=auth&action=profile';</script>";
+            } else {
+                die("Lỗi: Không thể update vào Database (Lỗi SQL).");
+            }
+        }
+    }
 }
 ?>
