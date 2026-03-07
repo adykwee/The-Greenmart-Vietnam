@@ -1,19 +1,19 @@
-# 🛒 The Greenmart Vietnam - PHP MVC E-Commerce Platform
+# The Greenmart Vietnam - PHP MVC E-Commerce Platform
 
 Một dự án website thương mại điện tử các sản phẩm thân thiện với môi trường được xây dựng hoàn toàn từ đầu (from scratch) dựa trên kiến trúc **MVC (Model-View-Controller)** sử dụng PHP thuần, không phụ thuộc vào bất kỳ framework PHP nào (như Laravel hay CodeIgniter).
 
-## 🚀 Các tính năng nổi bật (Key Features)
+## Các tính năng nổi bật (Key Features)
 
 Dự án được chia thành 2 phần chính: **Trang Khách hàng (Client)** và **Trang Quản trị (Admin Dashboard)**.
 
-### 👥 Dành cho Khách hàng (Client)
+### Dành cho Khách hàng (Client)
 * **Xác thực người dùng:** Đăng ký, Đăng nhập, Đổi mật khẩu, Cập nhật hồ sơ & Upload Avatar cá nhân.
 * **Mua sắm:** Xem danh sách sản phẩm, Tìm kiếm sản phẩm, Phân trang, Xem chi tiết sản phẩm.
 * **Giỏ hàng & Thanh toán:** Thêm/sửa/xóa sản phẩm trong giỏ hàng, đặt hàng.
 * **Tin tức & Tương tác:** Đọc tin tức công nghệ (có phân trang & tìm kiếm), bình luận dưới bài viết.
 * **Hỗ trợ khách hàng:** Xem trang Giới thiệu, Hỏi đáp (FAQ) dạng Accordion, Gửi form Liên hệ.
 
-### 🛡️ Dành cho Quản trị viên (Admin)
+### Dành cho Quản trị viên (Admin)
 * **Dashboard Thống kê:** Hiển thị doanh thu, số lượng đơn hàng mới, tổng sản phẩm và người dùng.
 * **Quản lý Đơn hàng (Role 3):** Xem chi tiết đơn hàng, cập nhật trạng thái đơn hàng (Pending, Processing, Completed, Cancelled).
 * **Quản lý Sản phẩm (Role 3):** Thêm, sửa, xóa sản phẩm và hình ảnh minh họa.
@@ -21,7 +21,7 @@ Dự án được chia thành 2 phần chính: **Trang Khách hàng (Client)** v
 * **Quản lý Liên hệ & Cấu hình (Role 1):** Đọc hộp thư liên hệ, đánh dấu trạng thái, thay đổi thông tin website (Tên, Logo, Địa chỉ, SĐT) tự động cập nhật lên View.
 * **Quản lý Hỏi đáp - FAQ (Role 2):** Cập nhật danh sách câu hỏi thường gặp theo thứ tự ưu tiên.
 
-## 🛠️ Công nghệ sử dụng
+## Công nghệ sử dụng
 * **Back-end:** PHP 8.x (Pure/Vanilla PHP), kiến trúc Custom MVC.
 * **Cơ sở dữ liệu:** MySQL (Giao tiếp qua PDO để chống SQL Injection).
 * **Front-end Client:** HTML5, CSS3, JavaScript, Bootstrap 5, FontAwesome.
@@ -30,7 +30,7 @@ Dự án được chia thành 2 phần chính: **Trang Khách hàng (Client)** v
 
 ---
 
-## ⚙️ Hướng dẫn Cài đặt (Installation & Setup)
+## Hướng dẫn Cài đặt (Installation & Setup)
 
 Để chạy dự án này trên máy tính cá nhân (Localhost), hãy làm theo các bước sau:
 
@@ -61,7 +61,7 @@ Dự án được chia thành 2 phần chính: **Trang Khách hàng (Client)** v
    * Truy cập trang khách hàng: `http://localhost/The-Greenmart-Vietnam/index.php`
    * Truy cập trang Admin: Đăng nhập bằng tài khoản quản trị viên.
 
-### 🔑 Tài khoản Test mặc định
+### Tài khoản Test mặc định
 * **Quyền Admin:**
   * Email: `admin@gmail.com`
   * Mật khẩu: `123456`
@@ -71,7 +71,7 @@ Dự án được chia thành 2 phần chính: **Trang Khách hàng (Client)** v
 
 ---
 
-## 📂 Cấu trúc Thư mục (Folder Structure)
+## Cấu trúc Thư mục (Folder Structure)
 
 ```text
 /techstore
