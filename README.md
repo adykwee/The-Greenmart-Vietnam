@@ -58,7 +58,7 @@ Dự án được chia thành 2 phần chính: **Trang Khách hàng (Client)** v
      ```
 
 4. **Khởi chạy Website:**
-   * Truy cập trang khách hàng: `http://localhost/techstore/index.php`
+   * Truy cập trang khách hàng: `http://localhost/`
    * Truy cập trang Admin: Đăng nhập bằng tài khoản quản trị viên.
 
 ### 🔑 Tài khoản Test mặc định
