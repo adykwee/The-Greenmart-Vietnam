@@ -55,6 +55,11 @@
                   </a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link" href="index.php?controller=adminInventory&action=index" >
+                    <span class="nav-link-title">Quản lý Kho</span>
+                  </a>
+                </li>
+                <li class="nav-item">
                   <a class="nav-link" href="index.php?controller=adminOrder&action=index" >
                     <span class="nav-link-title">Đơn hàng</span>
                   </a>

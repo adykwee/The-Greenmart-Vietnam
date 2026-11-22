@@ -27,7 +27,11 @@
             <h1 class="fw-bold"><?php echo $product['name']; ?></h1>
             
             <div class="mb-3">
-                <span class="badge bg-success">Còn hàng</span>
+                <?php if (($product['stock_quantity'] ?? 0) > 0): ?>
+                    <span class="badge bg-success">Còn hàng (<?php echo $product['stock_quantity']; ?> sản phẩm)</span>
+                <?php else: ?>
+                    <span class="badge bg-danger">Tạm hết hàng</span>
+                <?php endif; ?>
                 <span class="text-muted ms-2">Mã SP: #<?php echo $product['id']; ?></span>
             </div>
 
