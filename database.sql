@@ -100,11 +100,30 @@ CREATE TABLE IF NOT EXISTS `products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `price` int(11) NOT NULL DEFAULT 0,
+  `stock_quantity` int(11) NOT NULL DEFAULT 50,
   `description` text DEFAULT NULL,
   `content` longtext DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
   `created_at` timestamp DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- 5.1. Bảng `inventory_receipts`: Lịch sử phiếu nhập hàng 
+--
+CREATE TABLE IF NOT EXISTS `inventory_receipts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `import_price` int(11) NOT NULL DEFAULT 0,
+  `supplier` varchar(255) DEFAULT 'Nhà cung cấp Việt Nam',
+  `note` text DEFAULT NULL,
+  `created_by` int(11) DEFAULT 1,
+  `created_at` timestamp DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_inventory_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Dữ liệu mẫu Products

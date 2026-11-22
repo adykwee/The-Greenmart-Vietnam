@@ -21,12 +21,29 @@ class OrderModel extends BaseModel {
                           VALUES (:order_id, :product_id, :price, :quantity)";
             $stmtDetail = $this->conn->prepare($sqlDetail);
 
+            // Câu lệnh trừ tồn kho
+            $sqlDeductStock = "UPDATE products SET stock_quantity = stock_quantity - :quantity 
+                               WHERE id = :product_id AND stock_quantity >= :quantity";
+            $stmtDeductStock = $this->conn->prepare($sqlDeductStock);
+
             foreach ($cart_items as $item) {
+                // 3.1 Trừ số lượng tồn kho
+                $stmtDeductStock->execute([
+                    'quantity'   => $item['quantity'],
+                    'product_id' => $item['id']
+                ]);
+
+                // Nếu số dòng bị ảnh hưởng = 0 nghĩa là tồn kho không đủ!
+                if ($stmtDeductStock->rowCount() === 0) {
+                    throw new Exception("Sản phẩm ID " . $item['id'] . " đã hết hàng hoặc không đủ tồn kho!");
+                }
+
+                // 3.2 Lưu chi tiết đơn hàng
                 $stmtDetail->execute([
-                    'order_id' => $order_id,
+                    'order_id'   => $order_id,
                     'product_id' => $item['id'],
-                    'price' => $item['price'],
-                    'quantity' => $item['quantity']
+                    'price'      => $item['price'],
+                    'quantity'   => $item['quantity']
                 ]);
             }
 

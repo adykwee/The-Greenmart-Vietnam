@@ -16,6 +16,7 @@
                     <th>Hình ảnh</th>
                     <th>Tên sản phẩm</th>
                     <th>Giá</th>
+                    <th>Tồn kho</th>
                     <th>Hành động</th>
                 </tr>
             </thead>
@@ -33,6 +34,11 @@
                     </td>
                     <td><?php echo $p['name']; ?></td>
                     <td><?php echo number_format($p['price']); ?> đ</td>
+                    <td>
+                        <span class="badge <?php echo (($p['stock_quantity'] ?? 0) <= 0) ? 'bg-danger' : ((($p['stock_quantity'] ?? 0) < 10) ? 'bg-warning' : 'bg-success'); ?>">
+                            <?php echo $p['stock_quantity'] ?? 0; ?>
+                        </span>
+                    </td>
                     <td>
                         <a href="index.php?controller=adminProduct&action=edit&id=<?php echo $p['id']; ?>" class="btn btn-sm btn-primary">Sửa</a>
                         
