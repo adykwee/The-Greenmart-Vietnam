@@ -15,8 +15,26 @@
  */
 
 function executeCypher($statement, $parameters = []) {
-    $url = "http://127.0.0.1:7474/db/neo4j/tx/commit";
-    $auth = base64_encode("neo4j:dung2075");
+    // Tự động đọc cấu hình từ .env nếu có
+    $envFile = __DIR__ . '/../.env';
+    if (file_exists($envFile)) {
+        $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            if (strpos(trim($line), '#') === 0) continue;
+            $parts = explode('=', $line, 2);
+            if (count($parts) === 2) {
+                putenv(trim($parts[0]) . "=" . trim($parts[1]));
+            }
+        }
+    }
+
+    $neoHost = getenv('NEO4J_HOST') ?: '127.0.0.1';
+    $neoPort = getenv('NEO4J_PORT') ?: '7474';
+    $neoUser = getenv('NEO4J_USER') ?: 'neo4j';
+    $neoPass = (getenv('NEO4J_PASS') !== false) ? getenv('NEO4J_PASS') : 'password123';
+
+    $url = "http://$neoHost:$neoPort/db/neo4j/tx/commit";
+    $auth = base64_encode("$neoUser:$neoPass");
     $payload = json_encode([
         'statements' => [
             [

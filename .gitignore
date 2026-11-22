@@ -1,0 +1,9 @@
+# File chứa thông tin mật khẩu cá nhân (KHÔNG PUSH LÊN GIT)
+.env
+
+# File hệ thống & IDE
+.vscode/
+.idea/
+*.log
+Thumbs.db
+.DS_Store
