@@ -38,9 +38,34 @@ class ProductModel extends BaseModel {
         return $this->delete($this->table, $id);
     }
 
-    public function searchProduct($keyword) {
-        $sql = "SELECT * FROM $this->table WHERE name LIKE :keyword";
-        return $this->query($sql, ['keyword' => "%$keyword%"])->fetchAll(PDO::FETCH_ASSOC);
+    public function searchProducts($keyword, $minPrice, $maxPrice, $page) {
+        $conditions = [];
+        $params = [];
+        if ($keyword !== '') {
+            $conditions[] = "name LIKE :keyword ESCAPE '!'";
+            $params['keyword'] = '%' . strtr($keyword, ['!' => '!!', '%' => '!%', '_' => '!_']) . '%';
+        }
+        if ($minPrice !== null) {
+            $conditions[] = 'price >= :min_price';
+            $params['min_price'] = $minPrice;
+        }
+        if ($maxPrice !== null) {
+            $conditions[] = 'price <= :max_price';
+            $params['max_price'] = $maxPrice;
+        }
+
+        $where = $conditions ? ' WHERE ' . implode(' AND ', $conditions) : '';
+        $limit = 8;
+        $total = (int) $this->query("SELECT COUNT(*) FROM products$where", $params)->fetchColumn();
+        $totalPages = (int) ceil($total / $limit);
+        $currentPage = min($page, max(1, $totalPages));
+        $offset = ($currentPage - 1) * $limit;
+        $products = $this->query(
+            "SELECT * FROM products$where ORDER BY id LIMIT $limit OFFSET $offset",
+            $params
+        )->fetchAll(PDO::FETCH_ASSOC);
+
+        return ['data' => $products, 'total_pages' => $totalPages, 'current_page' => $currentPage];
     }
 }
 ?>
