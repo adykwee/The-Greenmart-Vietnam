@@ -242,6 +242,7 @@
                         <li><a class="dropdown-item" href="index.php?controller=admin&action=dashboard"><i class="fas fa-tachometer-alt me-2 text-muted"></i>Trang quản trị</a></li>
                     <?php endif; ?>
                     <li><a class="dropdown-item" href="index.php?controller=auth&action=profile"><i class="fas fa-user-circle me-2 text-muted"></i>Hồ sơ cá nhân</a></li>
+                    <li><a class="dropdown-item" href="index.php?controller=order"><i class="fas fa-box me-2 text-muted"></i>Đơn hàng của tôi</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item text-danger" href="index.php?controller=auth&action=logout"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
                 </ul>

@@ -11,16 +11,7 @@ class ProductController extends BaseController {
     // URL: index.php?controller=product&action=index
     // Xem danh sách sản phẩm (Trang cửa hàng)
     public function index() {
-        $page = isset($_GET['page']) ? $_GET['page'] : 1;
-    
-        // Lấy 8 sản phẩm mỗi trang
-        $pagingData = $this->productModel->paginate('products', $page, 8);
-    
-        $this->view('client/products/list', [
-            'products' => $pagingData['data'],
-            'totalPages' => $pagingData['total_pages'],
-            'currentPage' => $pagingData['current_page']
-        ]);
+        $this->showCatalog('index');
     }
 
     // URL: index.php?controller=product&action=detail&id=5
@@ -46,12 +37,53 @@ class ProductController extends BaseController {
     // URL: index.php?controller=product&action=search&keyword=iphone
     // Tìm kiếm sản phẩm
     public function search() {
-        $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
-        $products = $this->productModel->searchProduct($keyword);
-        
+        $this->showCatalog('search');
+    }
+
+    private function showCatalog($action) {
+        $filters = [];
+        $error = null;
+        foreach (['keyword', 'min_price', 'max_price'] as $key) {
+            $value = $_GET[$key] ?? '';
+            $filters[$key] = is_string($value) ? trim($value) : '';
+            if (!is_string($value)) {
+                $error = 'Điều kiện tìm kiếm không hợp lệ.';
+            }
+        }
+
+        $prices = [];
+        foreach (['min_price', 'max_price'] as $key) {
+            $value = $filters[$key];
+            $prices[$key] = $value === '' ? null : filter_var($value, FILTER_VALIDATE_INT, [
+                'options' => ['min_range' => 0, 'max_range' => 2147483647]
+            ]);
+        }
+        if (in_array(false, $prices, true)) {
+            $error = 'Giá phải là số nguyên từ 0 đến 2.147.483.647 đồng.';
+        } elseif ($prices['min_price'] !== null && $prices['max_price'] !== null
+            && $prices['min_price'] > $prices['max_price']) {
+            $error = 'Giá từ phải nhỏ hơn hoặc bằng giá đến.';
+        }
+
+        $page = filter_var($_GET['page'] ?? 1, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) ?: 1;
+        $results = $error === null
+            ? $this->productModel->searchProducts($filters['keyword'], $prices['min_price'], $prices['max_price'], $page)
+            : ['data' => [], 'total_pages' => 0, 'current_page' => 1];
+        $pageQuery = ['controller' => 'product', 'action' => $action];
+        foreach ($filters as $key => $value) {
+            if ($value !== '') {
+                $pageQuery[$key] = $value;
+            }
+        }
+
         $this->view('client/products/list', [
-            'products' => $products,
-            'title' => "Kết quả tìm kiếm: $keyword"
+            'products' => $results['data'],
+            'totalPages' => $results['total_pages'],
+            'currentPage' => $results['current_page'],
+            'filters' => $filters,
+            'filterError' => $error,
+            'pageQuery' => $pageQuery,
+            'title' => $action === 'search' ? 'Kết quả tìm kiếm' : 'Cửa Hàng'
         ]);
     }
 }
